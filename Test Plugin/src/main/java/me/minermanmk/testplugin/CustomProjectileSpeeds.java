@@ -11,7 +11,7 @@ import org.bukkit.util.Vector;
 public class CustomProjectileSpeeds implements Listener {
 
     public double MultiplierPotions = 2.5;
-    public double PotionHeightAdjust = 0.1;
+    public double PotionHeightAdjust = 0.2;
     public double MultiplierTridents = 1.0;
     public double BowDamageMod = 0.4;
     public double XBowDamageMod = 0.5;
@@ -40,7 +40,7 @@ public class CustomProjectileSpeeds implements Listener {
             } else {
                 damageMultiplier = XBowDamageMod;
                 accuracyMultiplier = XBowAccuracyMod;
-                speedMultiplier = BowSpeedMod;
+                speedMultiplier = XBowSpeedMod;
             }
             if (shooter instanceof Player) {
                 Vector normalized = target.getVelocity().normalize();
@@ -61,11 +61,14 @@ public class CustomProjectileSpeeds implements Listener {
                 //Vector newVelocity = playerNormalized.multiply(length);
                 //target.setVelocity(newVelocity);
             //}
+            Vector playerNormalized = ((Player) shooter).getEyeLocation().getDirection().normalize();
             Vector ov = target.getVelocity();
-            double newX = ov.getX() * MultiplierPotions;
-            double yVal = ov.getY();
-            double newY = ((1 - PotionHeightAdjust) * yVal + PotionHeightAdjust) * MultiplierPotions;
-            double newZ = ov.getZ() * MultiplierPotions;
+            double length = ov.length();
+            double newX = playerNormalized.getX() * MultiplierPotions * length;
+            double newY = playerNormalized.getY() * MultiplierPotions * length;
+            //double yVal = ov.getY() * MultiplierPotions * length;
+            //double newY = ((1 - PotionHeightAdjust) * yVal + PotionHeightAdjust) * MultiplierPotions;
+            double newZ = playerNormalized.getZ() * MultiplierPotions * length;
             target.setVelocity(new Vector(newX, newY, newZ));
         } else if (target instanceof org.bukkit.entity.Trident) {
             try{shooter = ((Trident) target).getShooter();} catch(NullPointerException e){return;}

@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class CustomProjectileLauncher implements Listener {
 
-    public static float shotgunSpread = 20F;
+    public static float shotgunSpread = 5F;
     public static float shotgunSpeed = 2F;
     public static int shotgunPelletCount = 9;
     @EventHandler
