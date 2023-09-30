@@ -31,7 +31,6 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CustomRaygun(), this);
         getServer().getPluginManager().registerEvents(new DisableUsables(), this);
     }
-
     @Override
     public void onDisable() {
         super.onDisable();
