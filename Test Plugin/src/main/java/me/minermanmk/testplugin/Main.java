@@ -28,6 +28,8 @@ public class Main extends JavaPlugin {
         SwitchCommand switchProjectiles = new SwitchCommand();
         this.getCommand("toggleProjSpeedMod").setExecutor(new SwitchCommand());
         getServer().getPluginManager().registerEvents(new CustomProjectileLauncher(), this);
+        getServer().getPluginManager().registerEvents(new CustomRaygun(), this);
+        getServer().getPluginManager().registerEvents(new DisableUsables(), this);
     }
 
     @Override
