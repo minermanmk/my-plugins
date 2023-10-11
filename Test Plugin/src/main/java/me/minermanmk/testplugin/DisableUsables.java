@@ -28,7 +28,7 @@ public class DisableUsables implements Listener {
         if(!event.hasBlock()) return;
         targetBlockType = event.getClickedBlock().getType();
 
-        if(targetGamemode == GameMode.ADVENTURE && (eventAction == Action.RIGHT_CLICK_AIR || eventAction == Action.RIGHT_CLICK_BLOCK) && targetBlockType != Material.OAK_DOOR){
+        if(targetGamemode == GameMode.ADVENTURE && (eventAction == Action.RIGHT_CLICK_AIR || eventAction == Action.RIGHT_CLICK_BLOCK) && targetBlockType != Material.CHEST){
             event.setCancelled(true);
         }
     }

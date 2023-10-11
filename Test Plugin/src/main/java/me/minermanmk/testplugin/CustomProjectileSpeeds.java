@@ -16,9 +16,14 @@ public class CustomProjectileSpeeds implements Listener {
     public double BowDamageMod = 0.4;
     public double XBowDamageMod = 0.5;
     public double BowAccuracyMod = 0.01;
-    public double XBowAccuracyMod = 0.08;
+    public double XBowAccuracyMod = 0.0;
     public double BowSpeedMod = 2.5;
     public double XBowSpeedMod = 2.0;
+
+    public double PlayerVelocityInaccuracyMultiplier = 4.0;
+    public double PlayerVelocityInaccuracyCap = 4.0;
+    //gravity on solid block imposes a -0.07 velocity to players approximately
+    public double PlayerVelocityDeadzone = 0.1;
 
     @EventHandler
     public void onFire(ProjectileLaunchEvent event) {
@@ -37,19 +42,33 @@ public class CustomProjectileSpeeds implements Listener {
                 damageMultiplier = BowDamageMod;
                 accuracyMultiplier = BowAccuracyMod;
                 speedMultiplier = BowSpeedMod;
+                Vector normalized = target.getVelocity().normalize();
+                double length = target.getVelocity().length();
+                Vector playerNormalized = ((Player) shooter).getEyeLocation().getDirection().normalize();
+
+                Vector normalizedAdjusted = normalized.multiply(accuracyMultiplier);
+                Vector playerNormalizedAdj = playerNormalized.multiply(1 - accuracyMultiplier);
+
+                // sets damage speed and direction for the arrow
+                Vector newVelocity = normalizedAdjusted.midpoint(playerNormalizedAdj).normalize().multiply(length);
+                target.setVelocity(newVelocity.multiply(speedMultiplier));
+                target.setVelocity(playerNormalized.multiply(length));
+                ((Arrow) target).setDamage(((Arrow) target).getDamage() * damageMultiplier);
             } else {
                 damageMultiplier = XBowDamageMod;
                 accuracyMultiplier = XBowAccuracyMod;
                 speedMultiplier = XBowSpeedMod;
-            }
-            if (shooter instanceof Player) {
                 Vector normalized = target.getVelocity().normalize();
                 double length = target.getVelocity().length();
                 Vector playerNormalized = ((Player) shooter).getEyeLocation().getDirection().normalize();
+
                 Vector normalizedAdjusted = normalized.multiply(accuracyMultiplier);
                 Vector playerNormalizedAdj = playerNormalized.multiply(1 - accuracyMultiplier);
+
+                // sets damage speed and direction for the arrow
                 Vector newVelocity = normalizedAdjusted.midpoint(playerNormalizedAdj).normalize().multiply(length);
                 target.setVelocity(newVelocity.multiply(speedMultiplier));
+                target.setVelocity(playerNormalized.multiply(length));
                 ((Arrow) target).setDamage(((Arrow) target).getDamage() * damageMultiplier);
             }
 
